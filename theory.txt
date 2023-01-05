@@ -1,0 +1,242 @@
+
+
+  To check Interrupts follow the path  ---> cd /usr/src/linux-headers-5.15.0-50-generic/include/linux
+                       linux version --->uname -r
+                       
+  scope resolution operator --> ::
+  
+  float d = 34.5;   at the time when we pass value it will consider it as the double. but,
+  float d = 34.5f/F ; it will consider it as the floating pointer.
+  
+   long double d = 34.5l/L -->it will represent the value as long double.if not mention l/L then it will consider it as the double.
+   
+    ctrl + shift + l --->Multi Cursor.
+    ctrl + shift +up/down key  ------>Multi Cursor.
+    
+    ctrl + d ----> copy and paste to next line.
+   
+   
+    Data Types :->
+                  it generally represent the type of the data stored in the variable.like
+                  
+                  
+                  PRIMARY                           DERIVED                  User-Defined
+
+                  Integer                           Function                 Structure
+                  Character                         Array                    Union
+                  Floating Point                    Pointer                  Class
+                  Double Floating Point             Reference                Typedef
+                  								Enum
+                  								
+   Literals :->
+       	The values assigned to each constant variable are reffered as the Literals,genarlly  constant and Literals are used interchangeably.
+       	
+       	Ex-> Int,Char,Float,String etc.
+       	
+  Keywords -->
+               already defined in Library like int,char, etc.
+               
+               
+ TypeCasting :->
+               Converting data types of the variable from one data types to another data types are called Typecasting. 
+               
+               
+ Inline :->   We can make any function inline, when any function is very small and  do not use in recursion function or using static variables.  
+ 
+ Multi Cursor :-> alt + cursor.
+ 
+ 
+ OOPS  -> Object oriented Programming.  
+ 
+ what is difference between protwected and private in C++ :
+ 
+ private - members cannot be accessed (or viewed) from outside the class. 
+ 
+ ** protected - members cannot be accessed from outside the class, however, they can be accessed in inherited classes.  
+ 
+ 
+     programm ------Compile-----> Machine Code ------Run----->Programm is running/Executing..
+     
+     base class pointer can point too the derived class ..it is possible in C++;
+     both class are of different type still we can point to one another..
+     
+     
+     Virtual function ..
+     
+      	it is very important to mention virtual against any function..
+      	if we want to to point same obj that we have assigned to different class pointerr..
+
+	here,if we have any pointer of base class and we assigned reference of object
+	of derived class.then still this pointer will point to base class..not to 
+	derived class..So,to avoid this situation we can use virtual keyword against the 
+	function.then,base class pointer will start pointing towards derived class..
+	
+	virtual void display(void)....
+ 
+ 
+ Q >> WHAT ID DIFFERENCE BETWEEN RWFERENCE AND POINTER ???
+ 
+                               REFERENCE                                                                            
+      
+   >>   It should be initialized when it is created.                                                                                                                                      
+       
+   >>   It cannot be NULL.
+      
+   >>   If reference is initialized once to an object it cannot be changed.                    	             								
+                          	             					
+                          	             					
+                          	             								
+                          	 Pointer
+   >>  It can be initialized at any time.
+   
+   >>  it can be NULL.
+   
+   >>  Pointer can point to another object at any time.                      	             								
+                          	             		
+                          	             		
+                          	             		
+                          	             		
+>>>Overview
+   
+   this pointer in C++ stores the address of the class instance, which is called from the member function that enables functions 
+   to access the correct object data members. We don't need to define the this pointer in C++ as a function argument in the class, 
+   and the compiler implicitly does it for us. this pointer can be accessed from every class function, including the constructor. 
+   Deleting the this pointer can lead to the program crashing and is generally not recommended.
+
+>>>Scope
+  
+  This article begins with a basic introduction to this pointer in C++ with an example and gradually covers every aspect.
+  We will discuss how the this pointer in C++ is passed to function as an argument and the different ways the this pointer 
+  is used to access members of an object.
+  In the end, we will see what happens when delete is called on the this pointer.
+  
+>>>Introduction
+ 
+  C++ allows users to create their data types using classes. A class has member variables and their functions called member functions. 
+  As we know, we can create multiple objects of the same class, and each object in C++ gets its copy of the data members of the class they point to, 
+  but all class objects access the same function definitions as present in the code segment.
+
+  If all the objects of a class can access only a common member function, how can they identify which data member to update and access correctly? 
+  To solve this confusion compiler uses a special kind of pointer, i.e., this pointer. 
+  The this pointer in C++ stores the address of the class instance (object), which is called from the member function, 
+  to enable functions to access the correct object data members.  
+  
+  Suppose we create an object named objectA of class A. The class A has a non-static member function foo(). 
+  When we call the function using objectA as objectA.foo(), the pointer this is passed to the function by the compiler implicitly. 
+  this pointer can be accessed from inside the function body to access data members of objectA because it stores the address of objectA.
+
+  So, when we call the function foo() we are calling foo(&objectA) because C++ adds a new parameter to the function. 
+  Since a new parameter is passed to the function, C++ converts the function definition from
+  
+ 
+ 
+ 
+  
+#include<iostream>
+
+using namespace std;
+
+/*
+ * Class - Employee
+ * data members - name, age, salary
+ * class methods - incrementSalary, display
+ */
+class Employee {
+    private:
+        // Private data members.
+        string name;
+        double salary;
+        int age;
+    public:
+        Employee (string n, int a, double s) {
+            // Class constructor.
+            name = n;
+            age = a;
+            salary = s;
+        }
+
+        void incrementSalary (double percentage) {
+            // Current salary of an employee is this->salary.
+            int current_salary = this->salary;
+            int increment_amount = current_salary * (percentage/100);
+            // Update the salary using this pointer.
+            this->salary = current_salary + increment_amount;
+        }
+ void display () {
+            // Display values of data members using this pointer.
+            cout<<"Employee Name: "<<this->name<<endl;
+            cout<<"Employee Age: "<<this->age<<endl;
+            cout<<"Employee Salary: "<<this->salary<<endl;
+        }
+};
+
+int main () {
+    // Create two objects emp_1 and emp_2 of class Employee.
+    Employee emp_1 = Employee ("Scaler", 22, 10000);
+    Employee emp_2 = Employee ("Topics", 23, 10000);
+    
+    int percentage_increment = 10; // 10%
+    // Increment salary of employee 1.
+    emp_1.incrementSalary(percentage_increment);
+    
+    // Display values of data members of objects of class Employee. 
+    emp_1.display();
+    cout<<"------\n";
+    emp_2.display();
+
+    return 0;
+}       
+
+
+
+
+
+#include<iostream>
+
+using namespace std;
+
+class Coordinate {
+    private:
+        int x;
+        int y;
+    public:
+        Coordinate (int x, int y) {
+            // Using this pointer inside the constructor
+            // to set values in data members.
+            this->x = x;
+            this->y = y;
+        }
+        void printCoordinate() {
+            cout<<"(x, y) = ("<<this->x<<", "<<this->y<<")"<<endl;
+        }
+};
+
+int main () {
+    // Passing x and y coordinate in the constructor.
+    Coordinate pointA(2, 3), pointB(5, 6);
+    
+    // Pointing the coordinates.
+    pointA.printCoordinate();
+    pointB.printCoordinate();
+    
+    return 0;
+}
+
+---> %fis used for float data types..%.3f is used for float value up to the decimal 3.. 
+
+
+                     	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
+                          	             								
